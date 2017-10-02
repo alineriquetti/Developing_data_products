@@ -1,0 +1,55 @@
+---
+title: "Maps in Leaflet"
+author: "Aline Riquetti"
+date: "2 de outubro de 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Map of population and distribuition by gender
+##### The next maps will show:
+
+- The cities in the State of Minas Gerais-Brazil
+1. By Population
+2. By gender distribution
+
+## Data
+
+```{r load_data, echo = FALSE}
+library(leaflet)
+cities<-read.csv("cities_minas.csv", sep=";", dec=",")
+cities$name<-as.character(cities$name)
+cities$color<-as.character(cities$color)
+cities$Population<-as.numeric(cities$Population)
+head(cities)
+```
+
+## Map with circle
+
+```{r circle}
+map1<-(
+cities %>% 
+  leaflet() %>%
+  addTiles () %>%
+  addCircles(weight=1, radius=sqrt(cities$Population)*30, color=cities$color) %>%
+  addLegend(labels=c("Male", "Female"), colors=c("blue", "red"))
+)
+map1
+```
+
+## Map with cluster
+
+```{r cluster}
+map2<-(
+cities %>% 
+  leaflet() %>%
+  addTiles () %>%
+  addMarkers(clusterOptions=markerClusterOptions()) %>%
+  addCircles(weight=1, radius=sqrt(cities$Population)*30, color=cities$color) %>%
+  addLegend(labels=c("Male", "Female"), colors=c("blue", "red"))
+)
+map2
+```
