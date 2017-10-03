@@ -1,0 +1,49 @@
+---
+title: "Rmarkdown with Plotly"
+author: "Aline Riquetti"
+date: "3 de outubro de 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## About the data
+
+In a research some data was collect about personal activity relatively inexpensively. In this experiment a group of enthusiasts take measurements about themselves regularly to improve their health, to find patterns in their behavior.
+
+***
+- The way the participants perform the experiment was:
+
+1. exactly according to the specification (Class A)
+2. throwing the elbows to the front (Class B)
+3. lifting the dumbbell only halfway (Class C)
+4. lowering the dumbbell only halfway (Class D)
+5. hrowing the hips to the front (Class E).
+
+- The measures used was:
+
+1. magnet_dumbbell_x
+2. yaw_dumbbell
+3. accel_dumbbell_x
+4. roll_dumbbel
+
+## Look the data
+
+```{r load_data, echo = FALSE, comment=""}
+urlTrain <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+download.file(urlTrain, destfile = "pml-training.csv") 
+data <- read.csv("pml-training.csv", na.strings=c("NA","#DIV/0!","")) 
+data<-data[c("magnet_dumbbell_x","yaw_dumbbell","accel_dumbbell_x","roll_dumbbell","classe")]
+data<-data[sample(nrow(data), round(0.2*nrow(data))), ]
+head(data)
+```
+
+## 3D plot
+
+```{r plotly, , message=FALSE, warning=FALSE}
+library(plotly)
+plot_ly(x=data$magnet_dumbbell_x, y=data$yaw_dumbbell, z=data$accel_dumbbell_x, type="scatter3d", mode="markers", color=data$classe, size=data$roll_dumbbel)
+```
+
